@@ -1,0 +1,152 @@
+\documentclass[12pt Times]{article}
+\usepackage[left=2.5cm,top=2.5cm,right=2.5cm,bottom=2.5cm,nohead,nofoot]{geometry}
+\usepackage{graphicx}
+
+
+\begin{document}
+
+\large
+
+\begin{centering}
+{\bf CS770/870  Assignment 5}
+\end{centering}
+
+\vspace{0.5cm}
+
+\noindent Due: Wednesday, October 21st, 2020.
+
+\noindent {Lateness: Thu -5, Fri -10, Sat/Sun/Mon -20, Tue -50, Wed -100}
+
+\begin{enumerate}
+\item Clipping: Consider the plane $x + y + z - 4 = 0$, and the
+  triangle with three vertices $V_1=(2, 0, 0)$, $V_2=(0, 2, 0)$, and
+  $V_3=(1, 1, 4)$.  Clip the polygon against the plane, and report the
+  two resulting polygons.
+
+  Details:
+  \begin{itemize}
+    \item The plane can also be written as $N\cdot(P - Q)=0$, with
+      $N=(1, 1, 1)$ and $Q=(4, 0, 0)$.
+    \item The intersection of
+      \begin{itemize}
+        \item  a line segment $P = A + t(B - A)$
+        \item and a plane $N\cdot(P - Q)=0$
+      \end{itemize}
+      can be obtained by computing
+      \[t = \frac{N\cdot(A-Q)}{N\cdot(A-B)}\]
+      and then substituting back into the line-segment equation to get $P$.
+  \end{itemize}
+
+\item Consider these polygons.  They are drawn in cross-section as line
+  segments, with arrows indicating front-facing normals.
+
+  \includegraphics[height=2in]{polygons.png}
+  \begin{enumerate}
+    \item Using polygon sorting, in what order should they be drawn
+      for the painter's algorithm, if the eye is at eye${}_1$?
+    \item Repeat the question for eye at eye${}_2$.
+  \end{enumerate}
+
+\item Consider the same polygons as above.
+  \begin{enumerate}
+  \item Draw the BSP tree obtained by inserting the polygons in
+    {\it alphabetical order}.  If any polygons are split, label them on the
+    diagram and in your tree.
+  \item Is the resulting tree the smallest possible?  Explain
+  \item Traverse the tree for eye point eye${}_1$, and list the
+    polygons in the order they are visited.
+  \item Repeat the question for eye point eye${}_2$.
+  \end{enumerate}
+
+\item The BSP traversal algorithm considers only the eye point, and
+ignores the view volume.  It considers {\bf all} the polygons
+in the tree, and then clips {\it all of them} against the view volume.
+This is wasteful.
+
+Modify the BSP traversal algorithm to take a view volume (6 planes, or
+8 vertices) as a parameter, and thus avoid visiting whole subtrees,
+improving the algorithm's performance.  Your algorithm should not
+modify the BSP tree.
+
+\end{enumerate}
+
+\begin{centering}
+{\bf Turn In Your Work}
+\end{centering}
+
+When you are done, go to {\tt mycourses.unh.edu}, find the course,
+Modules, Assignments, and Asn05.  Then upload a single file, in {\tt
+  PDF} format, which has been {\bf TYPED}, not hand-written (include
+pictures for question 3a).
+
+\end{document}
+
+
+
+
+
+
+  Recall that
+\subsection*{Goal}
+Implement a mouse-based version of the {\it Mastermind} game from the
+first assignment.
+
+Your playing field should look something like this:
+
+\includegraphics[height=3in]{guess.png}
+
+The field contains three grids:
+\begin{itemize}
+\item {\bf Pallette}: displays the colors available for the
+  player
+\item {\bf Guesses}: displays all the player's guesses so far.
+\item {\bf Hints}: shows the game's response to the player's guesses.
+  The goal is all black dots, indicating that every player guess
+  matches the secret colors.
+\end{itemize}
+
+\subsection*{Behavior}
+
+The player should be able to drag colors from the pallette to a column
+in the guess grid.  When a guess is complete, one entry of hints
+should light up.  Clicking on the lit-up hints should display the hints.
+
+When the player runs out of guesses, or solves the puzzle, the bottom
+row should display the solution.
+
+A working program is attached to the assignment, on lms, which has the
+correct functionality.
+
+\subsection*{Implementation}
+
+To make the program respond as described, you must handle all the
+mouse events carefully.  Here is a description of the behavior you
+should implement:
+\begin{itemize}
+\item If a button is pressed on a colored ball, save the color that was
+clicked on, and make it the ``active color''.
+
+\item If a button is pressed on an empty area, clear the active color.
+
+\item If no button is pressed, save the mouse position.
+
+\item If a button is released, somewhere on the guess grid, set the color
+{\bf for the active row} of that column (if there is an active color).
+
+\item If a button is released on an empty area, and it had earlier been
+pressed on a guess, set that guess to ``no color'' (this has the
+effect of removing guesses by dragging them away).
+
+\item If a row is complete, light up the corresponding hint row.
+
+\item If the button is pressed on the hint row, and the hint row is lit,
+evaluate the hint values (number of black and white dots).
+\end{itemize}
+
+All this event handling should take place in the {\tt Update} method.
+Your {\tt Draw} method should merely display whatever state was set by
+the {\tt Update} method, and should not query the mouse state.
+
+
+\end{document}
+
